@@ -1,0 +1,4 @@
+com\mycompany\myfileserver\dto\FileDataDto.class
+com\mycompany\myfileserver\service\WorkFileService.class
+com\mycompany\myfileserver\controller\FileUploadController.class
+com\mycompany\myfileserver\MyFileServer.class

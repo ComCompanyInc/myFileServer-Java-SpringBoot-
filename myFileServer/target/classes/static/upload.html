@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Manager</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>File Manager</h1>
+    
+    <!-- Секция загрузки -->
+    <div class="upload-section">
+        <h2>Upload Big File (up to 5GB)</h2>
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+            <input type="file" name="file" />
+            <br/><br/>
+            <input type="submit" value="Upload" />
+        </form>
+    </div>
+
+    <!-- Секция списка файлов -->
+    <div class="files-section">
+        <h2>Uploaded Files</h2>
+        
+        <!-- Пагинация -->
+        <div class="pagination">
+            <button id="prevBtn">← Previous</button>
+            <span id="pageInfo">Page 1 of 1</span>
+            <button id="nextBtn">Next →</button>
+        </div>
+
+        <!-- Таблица файлов -->
+        <table id="filesTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="filesBody">
+                <tr>
+                    <td colspan="3">Loading files...</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Информация о пагинации -->
+        <div id="paginationInfo">Showing 0 of 0 files</div>
+    </div>
+
+    <script src="/js/pagination.js"></script>
+</body>
+</html>
