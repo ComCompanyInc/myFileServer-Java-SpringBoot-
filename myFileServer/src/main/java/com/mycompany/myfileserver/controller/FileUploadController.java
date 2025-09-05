@@ -6,7 +6,14 @@ package com.mycompany.myfileserver.controller;
 
 import com.mycompany.myfileserver.dto.FileDataDto;
 import com.mycompany.myfileserver.service.WorkFileService;
+import jakarta.websocket.server.PathParam;
+import java.nio.file.Path;
 import java.util.List;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,4 +45,22 @@ public class FileUploadController {
     public List<FileDataDto> getUploadedFiles(@RequestParam("page") int page, @RequestParam("size") int size) {
         return workFileService.getUploadedFiles(page, size);
     }
+    
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteFile(@RequestParam("nameFile") String nameFile){
+        return ResponseEntity.ok(workFileService.deleteFile(nameFile));
+    } 
+    
+    @GetMapping("/download")
+    public ResponseEntity<Resource> downloadFile(@RequestParam("nameFile") String nameFile){
+        Path filePath = workFileService.findFileByName(nameFile);
+        
+        // Создаем Resource из файла
+        Resource resource = new FileSystemResource(filePath);
+        
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, 
+                "attachment; filename=\"" + nameFile + "\"") // header - говорит о том как обрабатывать файл в случае получения пользователем - что это не текст и его нужно скачать в нашем случае
+            .body(resource);
+    } 
 }

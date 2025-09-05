@@ -7,6 +7,8 @@ package com.mycompany.myfileserver.dto;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.util.Date;
 
 /**
@@ -27,7 +29,18 @@ public class FileDataDto {
             this.setSize("[DIR]");
         }
         
-        this.setDate(new Date());
+        // Читаем атрибуты файла
+        BasicFileAttributes attrs = Files.readAttributes(
+            file, BasicFileAttributes.class
+        );
+            
+        // Получаем время создания
+        FileTime creationTime = attrs.creationTime();
+            
+        // Преобразуем в Date
+        Date creationDate = new Date(creationTime.toMillis());
+        
+        this.setDate(creationDate);
     }
 
     public String getName() {

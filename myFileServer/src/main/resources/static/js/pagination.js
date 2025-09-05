@@ -26,7 +26,6 @@ async function loadFiles(page, size) {
     showLoading();
 
     try {
-        // ИСПРАВЛЕННЫЙ URL - без /api/files
         const response = await fetch(`/getUploaded?page=${page}&size=${size}`);
 
         if (!response.ok) {
@@ -34,14 +33,27 @@ async function loadFiles(page, size) {
         }
 
         const files = await response.json();
+        
+        // ВРЕМЕННОЕ РЕШЕНИЕ: так как бэкенд возвращает только массив файлов
+        // без метаданных пагинации, мы должны сами управлять состоянием
+        
+        // Предположим, что если файлов больше или равно pageSize, 
+        // то probably есть еще страницы
+        if (files.length >= pageSize) {
+            totalPages = page + 2; // Предполагаем, что есть следующая страница
+        } else {
+            totalPages = page + 1; // Это последняя страница
+        }
+        
+        totalElements = (page * size) + files.length;
+        currentPage = page;
+        
         updateFilesTable(files);
         updatePaginationInfo();
 
     } catch (error) {
         console.error('Error loading files:', error);
         showError('Error loading files: ' + error.message);
-
-        // Покажем тестовые данные для демонстрации
         showTestData();
     }
 }
@@ -50,7 +62,7 @@ async function loadFiles(page, size) {
 function showLoading() {
     document.getElementById('filesBody').innerHTML = `
         <tr>
-            <td colspan="3" class="loading">Loading files...</td>
+            <td colspan="5" class="loading">Loading files...</td>
         </tr>
     `;
 }
@@ -59,7 +71,7 @@ function showLoading() {
 function showError(message) {
     document.getElementById('filesBody').innerHTML = `
         <tr>
-            <td colspan="3" class="error">${message}</td>
+            <td colspan="5" class="error">${message}</td>
         </tr>
     `;
 }
@@ -87,7 +99,7 @@ function updateFilesTable(files) {
     if (!files || files.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="3" class="empty">No files found</td>
+                <td colspan="5" class="empty">No files found</td>
             </tr>
         `;
         return;
@@ -98,6 +110,16 @@ function updateFilesTable(files) {
             <td>${escapeHtml(file.name)}</td>
             <td>${escapeHtml(file.size)}</td>
             <td>${formatDate(file.date)}</td>
+            <td>    
+                <button type="button" class="download-btn" data-filename="${escapeHtml(file.name)}"> 
+                    Скачать 
+                </button>
+            </td>
+            <td>
+                <button type="button" class="delete-btn" data-filename="${escapeHtml(file.name)}">
+                   Удалить
+                </button>
+            </td>
         </tr>
     `).join('');
 }
@@ -144,3 +166,36 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+// Обработчик скачивания файла
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('download-btn')) {
+        const fileName = e.target.getAttribute('data-filename');
+        window.open(`/download?nameFile=${encodeURIComponent(fileName)}`, '_blank');
+    }
+});
+
+// Обработчик удаления файла
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('delete-btn')) {
+        const fileName = e.target.getAttribute('data-filename');
+        
+        if (confirm(`Удалить файл "${fileName}"?`)) {
+            fetch('/delete?nameFile=' + encodeURIComponent(fileName), {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Файл удален');
+                    loadFiles(currentPage, pageSize);
+                } else {
+                    throw new Error('Ошибка сервера');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка удаления:', error);
+                alert('Ошибка при удалении файла');
+            });
+        }
+    }
+});

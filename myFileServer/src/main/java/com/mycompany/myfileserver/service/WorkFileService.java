@@ -5,6 +5,7 @@
 package com.mycompany.myfileserver.service;
 
 import com.mycompany.myfileserver.dto.FileDataDto;
+import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -81,6 +82,32 @@ public class WorkFileService {
         }
     }
 
+    public Path findFileByName(String name) {
+        Path filePath = uploadDir.resolve(name); // directoryPath.resolve(fileName) объединяет путь директории с именем файла
+        
+        // Проверяем существование файла
+        if (Files.exists(filePath)) {
+            // возвращаем
+            return filePath;
+        } else {
+            return null;
+        }
+    }
+    
+    public String deleteFile(String name) {
+        try {
+            // Удаляем файл
+            if (findFileByName(name) != null) {
+                Files.delete(findFileByName(name));
+                return "Файл успешно удален: " + name;
+            } else {
+                return "Файл не найден - " + name;
+            }
+        } catch (IOException e) {
+            return "Ошибка при удалении файла: " + e.getMessage();
+        }
+    }
+    
     public MultipartFile getFile() {
         return file;
     }
