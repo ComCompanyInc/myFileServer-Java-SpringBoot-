@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Вход в систему</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h2>
+            Вход в FileManager
+        </h2>
+        
+        <form method="POST" action="/login">
+            <div>
+                <label>Логин:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div>
+                <label>Пароль:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Войти</button>
+        </form>
+    </body>
+</html>
