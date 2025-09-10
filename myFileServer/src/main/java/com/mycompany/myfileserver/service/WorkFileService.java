@@ -13,6 +13,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +27,11 @@ public class WorkFileService {
     private MultipartFile file;
     
     // Директория со всеми файлами
-    Path uploadDir = Paths.get("uploads");
+    Path uploadDir = Paths.get("uploads"); // базовая директория
+    
+    public void setCurrentUploadDir(String currentUserLogin) {
+        this.uploadDir = Paths.get("uploads", currentUserLogin); // Устанавливаем путь пользователя
+    }
     
     public String uploadFile() {
         try {

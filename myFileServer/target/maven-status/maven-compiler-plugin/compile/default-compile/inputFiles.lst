@@ -1,10 +1,17 @@
 C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\configuration\SecurityConfig.java
 C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\controller\FileUploadController.java
+C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\controller\MessageController.java
+C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\dto\AccessDto.java
 C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\dto\FileDataDto.java
+C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\dto\MessageDto.java
+C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\dto\RoleDto.java
 C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\entity\Access.java
+C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\entity\Message.java
 C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\entity\Role.java
 C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\MyFileServer.java
 C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\repository\AccessRepository.java
+C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\repository\MessageRepository.java
 C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\repository\RoleRepository.java
+C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\service\MessageService.java
 C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\service\UserDetailsCustomService.java
 C:\Users\User\Desktop\myFileServer\myFileServer\src\main\java\com\mycompany\myfileserver\service\WorkFileService.java

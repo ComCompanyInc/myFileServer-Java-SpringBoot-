@@ -27,14 +27,6 @@ public class UserDetailsCustomService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         // ищем пользователя по логину
-        
-        System.out.println("i: " + login);
-        try {
-        System.out.println("!!!!!!!!!!!!!!!!!!! " + accessRepository.findByLogin(login).get().getLogin());
-        } catch(Exception e){
-            System.out.println("????????????????? UGH!");
-        }
-        
         try {
             Access access = accessRepository.findByLogin(login).get();
             
@@ -54,5 +46,4 @@ public class UserDetailsCustomService implements UserDetailsService {
             throw new UsernameNotFoundException("Ошибка - пользователь не найден! " + ex);
         }
     }
-    
 }

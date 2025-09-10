@@ -6,16 +6,16 @@ package com.mycompany.myfileserver.controller;
 
 import com.mycompany.myfileserver.dto.FileDataDto;
 import com.mycompany.myfileserver.service.WorkFileService;
-import jakarta.websocket.server.PathParam;
 import java.nio.file.Path;
 import java.util.List;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,24 +35,28 @@ public class FileUploadController {
     }
     
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
+    public String uploadFile(@RequestParam("file") MultipartFile file, @AuthenticationPrincipal UserDetails userDetails) {
+        workFileService.setCurrentUploadDir(userDetails.getUsername()); // задаем папку пользователя как путь в который будут храниться все его файлы
         workFileService.setFile(file);
         
         return workFileService.uploadFile();
     }
     
     @GetMapping("/getUploaded")
-    public List<FileDataDto> getUploadedFiles(@RequestParam("page") int page, @RequestParam("size") int size) {
+    public List<FileDataDto> getUploadedFiles(@RequestParam("page") int page, @RequestParam("size") int size, @AuthenticationPrincipal UserDetails userDetails) {
+        workFileService.setCurrentUploadDir(userDetails.getUsername()); // задаем папку пользователя как путь в который будут храниться все его файлы
         return workFileService.getUploadedFiles(page, size);
     }
     
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteFile(@RequestParam("nameFile") String nameFile){
+    public ResponseEntity<?> deleteFile(@RequestParam("nameFile") String nameFile, @AuthenticationPrincipal UserDetails userDetails){
+        workFileService.setCurrentUploadDir(userDetails.getUsername()); // задаем папку пользователя как путь в который будут храниться все его файлы
         return ResponseEntity.ok(workFileService.deleteFile(nameFile));
     } 
     
     @GetMapping("/download")
-    public ResponseEntity<Resource> downloadFile(@RequestParam("nameFile") String nameFile){
+    public ResponseEntity<Resource> downloadFile(@RequestParam("nameFile") String nameFile, @AuthenticationPrincipal UserDetails userDetails){
+        workFileService.setCurrentUploadDir(userDetails.getUsername()); // задаем папку пользователя как путь в который будут храниться все его файлы
         Path filePath = workFileService.findFileByName(nameFile);
         
         // Создаем Resource из файла

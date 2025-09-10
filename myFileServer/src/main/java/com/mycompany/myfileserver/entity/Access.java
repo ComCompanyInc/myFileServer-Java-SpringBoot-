@@ -4,6 +4,7 @@
  */
 package com.mycompany.myfileserver.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +12,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 
 /**
  *
@@ -38,6 +41,20 @@ public class Access {
     )
     @ManyToOne
     private Role role;
+    
+    @OneToMany(
+        mappedBy = "sender",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Message> sendersMessage;
+    
+    @OneToMany(
+        mappedBy = "receiver",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Message> receiversMessage;
 
     public String getLogin() {
         return login;
@@ -78,4 +95,22 @@ public class Access {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public List<Message> getSendersMessage() {
+        return sendersMessage;
+    }
+
+    public void setSendersMessage(List<Message> sendersMessage) {
+        this.sendersMessage = sendersMessage;
+    }
+
+    public List<Message> getReceiversMessage() {
+        return receiversMessage;
+    }
+
+    public void setReceiversMessage(List<Message> receiversMessage) {
+        this.receiversMessage = receiversMessage;
+    }
+    
+    
 }

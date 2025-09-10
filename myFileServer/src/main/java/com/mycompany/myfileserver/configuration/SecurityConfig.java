@@ -7,6 +7,7 @@ package com.mycompany.myfileserver.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -50,6 +51,7 @@ public class SecurityConfig {
                     .defaultSuccessUrl("/upload.html") // куда перейти после входа
                     .permitAll()
                 )
+                .httpBasic(Customizer.withDefaults()) //для поддержки авторизации не только через form-data но и Basic Authorization (как раз и включаетBasic Authorization, мне это нужно для постмана)
                 .logout(logout -> logout
                     .logoutUrl("/logout") // endpoint для выхода
                     .logoutSuccessUrl("/main") // куда перейти после выхода

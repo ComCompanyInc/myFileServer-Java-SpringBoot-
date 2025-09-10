@@ -1,0 +1,70 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.myfileserver.controller;
+
+import com.mycompany.myfileserver.dto.MessageDto;
+import com.mycompany.myfileserver.entity.Message;
+import com.mycompany.myfileserver.repository.MessageRepository;
+import com.mycompany.myfileserver.service.MessageService;
+import java.util.List;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ *
+ * @author User
+ */
+@RestController
+public class MessageController {
+    
+    MessageService messageService;
+    
+    public MessageController(MessageService messageService) {
+        this.messageService = messageService;
+    }
+    
+    @GetMapping("/messages")
+    public List<MessageDto> getMessagesForCurrentUser(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "20") int size,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        messageService.setUserLogin(userDetails.getUsername());
+        
+        // СОЗДАЕМ Pageable и передаем в репозиторий (для пагинации)
+        Pageable pageable = PageRequest.of(page, size);
+        
+        return messageService.getUsersMessages(pageable);
+    }
+    
+    /*
+    Пример json:
+    {
+        "description": "Привет, вот файл который ты просил",
+        "fileUrl": "/files/document.pdf",
+        "sender": {
+            "id": 1
+        },
+        "receiver": {
+            "id": 1
+        }
+    }
+    */
+    @PostMapping("/send")
+    public ResponseEntity<?> sendMessage(@RequestBody Message message, @AuthenticationPrincipal UserDetails userDetails) {
+        messageService.setUserLogin(userDetails.getUsername());
+        
+        return messageService.sendMessage(message);
+    }
+}
