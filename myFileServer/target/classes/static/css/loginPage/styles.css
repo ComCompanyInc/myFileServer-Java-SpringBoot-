@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+            
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f9f8 0%, #e8f4f1 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+            
+#header-container {
+    width: 100%;
+    max-width: 500px;
+}
+            
+h2 {
+    color: #0a5045;
+    text-align: center;
+    margin: 30px 0 25px 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+            
+form {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(10, 80, 69, 0.15);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+            
+div {
+    margin-bottom: 20px;
+}
+            
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #0a5045;
+    font-weight: 500;
+    font-size: 14px;
+}
+            
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e0ece9;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #f8fcfb;
+}
+            
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #1c7c64;
+    box-shadow: 0 0 0 3px rgba(28, 124, 100, 0.1);
+}
+            
+button {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #0a5045 0%, #1c7c64 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+            
+button:hover {
+    background: linear-gradient(135deg, #08382f 0%, #15644f 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(10, 80, 69, 0.3);
+}
+            
+button:active {
+    transform: translateY(0);
+}
+            
+@media (max-width: 480px) {
+    form {
+        padding: 25px 20px;
+    }
+                
+    h2 {
+        font-size: 24px;
+        margin: 20px 0;
+    }
+                
+    input[type="text"],
+    input[type="password"] {
+        padding: 12px;
+    }
+                
+    button {
+        padding: 14px;
+    }
+}

@@ -5,7 +5,15 @@
     background: linear-gradient(135deg, #0a5045 0%, #1c7c64 100%);
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     box-sizing: border-box;
-    position: relative;
+    position: fixed; /* Фиксированное позиционирование */
+    top: 0; /* Прижимаем к верхнему краю */
+    left: 0; /* Прижимаем к левому краю */
+    z-index: 1000; /* Убедимся, что хедер поверх других элементов */
+}
+
+/* Добавляем отступ для body, чтобы контент не скрывался под фиксированным хедером */
+body {
+    padding-top: 60px; /* Высота хедера (15px + 15px + контент) */
 }
 
 .header-content {
@@ -47,61 +55,34 @@
     background: rgba(255,255,255,0.15);
 }
 
+/* Убираем мобильное меню полностью */
 .mobile-menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 10px;
-    position: absolute;
-    right: 15px;
-    top: 10px;
+    display: none !important;
 }
 
+/* Убираем все медиа-запросы для мобильной версии */
 @media (max-width: 768px) {
-    .header {
-        padding: 15px 0;
-    }
-    
     .nav {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: linear-gradient(135deg, #0a5045 0%, #1c7c64 100%);
+        display: flex !important;
+        flex-direction: row;
+        position: static;
+        background: transparent;
+        box-shadow: none;
         gap: 0;
-        z-index: 1000;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-    
-    .nav.active {
-        display: flex;
-    }
-    
-    .mobile-menu-btn {
-        display: block;
     }
     
     .nav-item {
-        width: 100%;
+        width: auto;
         min-width: auto;
-        padding: 15px;
-        border-right: none;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-        font-size: 16px;
-        white-space: normal;
-    }
-    
-    .nav-item:last-child {
+        padding: 15px 0;
+        border-right: 1px solid rgba(255,255,255,0.1);
         border-bottom: none;
+        font-size: inherit;
+        white-space: nowrap;
     }
     
-    .header-content {
-        justify-content: flex-start;
-        padding: 0 15px;
+    /* Уменьшаем отступ для мобильных устройств */
+    body {
+        padding-top: 50px;
     }
 }

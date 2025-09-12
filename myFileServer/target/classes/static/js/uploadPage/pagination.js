@@ -99,7 +99,7 @@ function updateFilesTable(files) {
     if (!files || files.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="6" class="empty">No files found</td>
+                <td colspan="6" class="empty">Файлов не найдено</td>
             </tr>
         `;
         return;

@@ -39,8 +39,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/login", "/public/**", "/static/**")
-                    .permitAll() // эти страницы доступны всем
+                    .requestMatchers("/login", "/public/**", "/static/**", "/css/**", "/header.html") //, "/*.html",// ← РАЗРЕШАЕМ ВСЕ HTML ФАЙЛЫ
+                    .permitAll() // эти страницы доступны всем (разрешаем спрингу их отдавать)
 
                     .requestMatchers("/admin/**").hasAnyRole("ADMIN") // только для админов
                     .anyRequest().authenticated() // остальные только для вошедших
