@@ -5,6 +5,7 @@
 package com.mycompany.myfileserver.dto;
 
 import com.mycompany.myfileserver.entity.Message;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -13,14 +14,18 @@ import com.mycompany.myfileserver.entity.Message;
 public class MessageDto {
     private Long id;
     private String description;
+    private LocalDateTime sendDate;
     private AccessDto receiver;
     private AccessDto sender;
+    private String fileUrl;
     
     public MessageDto(Message message) {
         this.id = message.getId();
         this.description = message.getDescription();
+        this.sendDate = message.getSendDate();
         this.receiver = new AccessDto(message.getReceiver());
         this.sender = new AccessDto(message.getSender());
+        this.fileUrl = message.getFileUrl();
     }
     
     public Long getId() {
@@ -53,5 +58,21 @@ public class MessageDto {
 
     public void setSender(AccessDto sender) {
         this.sender = sender;
+    }
+
+    public LocalDateTime getSendDate() {
+        return sendDate;
+    }
+
+    public void setSendDate(LocalDateTime sendDate) {
+        this.sendDate = sendDate;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 }

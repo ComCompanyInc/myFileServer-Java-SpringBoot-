@@ -6,6 +6,7 @@ package com.mycompany.myfileserver.controller;
 
 import com.mycompany.myfileserver.dto.MessageDto;
 import com.mycompany.myfileserver.entity.Message;
+import com.mycompany.myfileserver.repository.AccessRepository;
 import com.mycompany.myfileserver.repository.MessageRepository;
 import com.mycompany.myfileserver.service.MessageService;
 import java.util.List;
@@ -29,9 +30,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
     
     MessageService messageService;
+    AccessRepository accessRepository;
     
-    public MessageController(MessageService messageService) {
+    public MessageController(MessageService messageService, AccessRepository accessRepository) {
         this.messageService = messageService;
+        this.accessRepository = accessRepository;
     }
     
     @GetMapping("/messages")
@@ -63,6 +66,9 @@ public class MessageController {
     */
     @PostMapping("/send")
     public ResponseEntity<?> sendMessage(@RequestBody Message message, @AuthenticationPrincipal UserDetails userDetails) {
+        message.setSender(accessRepository.findByLogin(userDetails.getUsername()).get()); // берем текущего пользователя и помечаем его как отправителя в полученном обьекте сообщения
+        message.setReceiver(accessRepository.findByLogin(message.getReceiver().getLogin()).get()); // берем из сообщения обьект о получателе из фронта и находим через репозиторий по логину
+        
         messageService.setUserLogin(userDetails.getUsername());
         
         return messageService.sendMessage(message);

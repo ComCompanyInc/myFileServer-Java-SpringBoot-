@@ -4,14 +4,25 @@
     <title>File Manager</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/uploadPage/styles.css">
 </head>
 <body>
+    <div id="header-container"></div>
+
+    <script>
+      // Загрузка хедера
+      fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header-container').innerHTML = data;
+        });
+    </script>
+    
     <h1>File Manager</h1>
     
     <!-- Секция загрузки -->
     <div class="upload-section">
-        <h2>Upload Big File (up to 5GB)</h2>
+        <h2>Загрузить Большой Файл (до 5GB)</h2>
         <form method="POST" action="/upload" enctype="multipart/form-data">
             <input type="file" name="file" />
             <br/><br/>
@@ -21,37 +32,38 @@
 
     <!-- Секция списка файлов -->
     <div class="files-section">
-        <h2>Uploaded Files</h2>
+        <h2>Загруженные файлы</h2>
         
         <!-- Пагинация -->
         <div class="pagination">
             <button id="prevBtn">← Previous</button>
-            <span id="pageInfo">Page 1 of 1</span>
-            <button id="nextBtn">Next →</button>
+            <span id="pageInfo">Страница 1 из 1</span>
+            <button id="nextBtn">След. →</button>
         </div>
 
         <!-- Таблица файлов -->
         <table id="filesTable">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Size</th>
-                    <th>Date</th>
-                    <th>Download</th>
-                    <th>Delete</th>
+                    <th>Имя</th>
+                    <th>Размер</th>
+                    <th>Дата</th>
+                    <th>Скачать</th>
+                    <th>Удалить</th>
+                    <th>Ссылка</th>
                 </tr>
             </thead>
             <tbody id="filesBody">
                 <tr>
-                    <td colspan="5">Loading files...</td>
+                    <td colspan="6">Загрузка файлов...</td>
                 </tr>
             </tbody>
         </table>
 
         <!-- Информация о пагинации -->
-        <div id="paginationInfo">Showing 0 of 0 files</div>
+        <div id="paginationInfo">Показано 0 из 0 файлов</div>
     </div>
 
-    <script src="/js/pagination.js"></script>
+    <script src="/js/uploadPage/pagination.js"></script>
 </body>
 </html>

@@ -62,7 +62,7 @@ async function loadFiles(page, size) {
 function showLoading() {
     document.getElementById('filesBody').innerHTML = `
         <tr>
-            <td colspan="5" class="loading">Loading files...</td>
+            <td colspan="6" class="loading">Loading files...</td>
         </tr>
     `;
 }
@@ -71,7 +71,7 @@ function showLoading() {
 function showError(message) {
     document.getElementById('filesBody').innerHTML = `
         <tr>
-            <td colspan="5" class="error">${message}</td>
+            <td colspan="6" class="error">${message}</td>
         </tr>
     `;
 }
@@ -99,7 +99,7 @@ function updateFilesTable(files) {
     if (!files || files.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="5" class="empty">No files found</td>
+                <td colspan="6" class="empty">Файлов не найдено</td>
             </tr>
         `;
         return;
@@ -119,6 +119,11 @@ function updateFilesTable(files) {
                 <button type="button" class="delete-btn" data-filename="${escapeHtml(file.name)}">
                    Удалить
                 </button>
+            </td>
+            <td>
+                <div class="copy-text">
+                    /download?nameFile=${escapeHtml(file.name)}
+                </div>
             </td>
         </tr>
     `).join('');

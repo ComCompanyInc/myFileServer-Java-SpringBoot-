@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>хедер</title>
+        <link rel="stylesheet" href="/css/header/styles.css">
+    </head>
+    <body>
+        <header class="header">
+            <div class="header-content">
+
+                <button class="mobile-menu-btn">☰</button>
+
+                <nav class="nav">
+                    <a href="upload.html" class="nav-item">
+                        <span class="nav-icon">🏠</span>
+                        <span>Главная</span>
+                    </a>
+                    <a href="login.html" class="nav-item">
+                        <span class="nav-icon">🔑</span>
+                        <span>Вход</span>
+                    </a>
+                    <a href="logout.html" class="nav-item">
+                        <span class="nav-icon">🚪</span>
+                        <span>Выход</span>
+                    </a>
+                    <a href="about.html" class="nav-item">
+                        <span class="nav-icon">👨‍💻</span>
+                        <span>О создателе</span>
+                    </a>
+                </nav>
+            </div>
+        </header>
+
+        <script>
+            // Анимация появления элементов при загрузке
+            document.addEventListener('DOMContentLoaded', function() {
+                const header = document.querySelector('.header');
+                header.style.opacity = '0';
+                header.style.transform = 'translateY(-20px)';
+
+                setTimeout(() => {
+                    header.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    header.style.opacity = '1';
+                    header.style.transform = 'translateY(0)';
+                }, 300);
+
+                // Мобильное меню
+                const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+                const nav = document.querySelector('.nav');
+
+                mobileMenuBtn.addEventListener('click', function() {
+                    nav.classList.toggle('active');
+                });
+
+                // Закрытие меню при клике на пункт
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        nav.classList.remove('active');
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

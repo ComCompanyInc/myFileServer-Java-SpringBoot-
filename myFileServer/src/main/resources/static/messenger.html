@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Система сообщений</title>
+        <link rel="stylesheet" href="/css/messagePage/styles.css">
+    </head>
+    <body>
+        <div id="header-container"></div>
+
+        <script>
+          // Загрузка хедера
+          fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('header-container').innerHTML = data;
+            });
+        </script>
+        
+        <div class="container">
+        <header>
+            <h1>Моя система сообщений</h1>
+            <div id="user-info">
+                <span>Вы вошли как: </span>
+                <span id="username">Гость</span>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <section class="messages-section">
+                <h2>Мои сообщения</h2>
+                <div id="messages-container">
+                    <div class="messages-list" id="messages-list">
+                        <!-- Сообщения будут загружаться здесь -->
+                    </div>
+                    <div class="pagination" id="pagination">
+                        <!-- Пагинация будет генерироваться здесь -->
+                    </div>
+                </div>
+            </section>
+
+            <section class="send-section">
+                <h2>Отправить сообщение</h2>
+                <form id="message-form">
+                    <div class="form-group">
+                        <label for="receiver">Получатель (логин):</label>
+                        <input type="text" id="receiver" name="receiver" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Текст сообщения:</label>
+                        <textarea id="description" name="description" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="fileUrl">Ссылка на файл (опционально):</label>
+                        <input type="text" id="fileUrl" name="fileUrl">
+                    </div>
+                    <button type="submit" id="send-button">Отправить</button>
+                </form>
+                <div id="form-message"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="/js/messagePage/pagination.js"></script>
+    </body>
+</html>

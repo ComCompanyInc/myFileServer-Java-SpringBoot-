@@ -10,6 +10,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        <div id="header-container"></div>
+
+        <script>
+          // Загрузка хедера
+          fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('header-container').innerHTML = data;
+            });
+        </script>
+        
         <h2>
             Вход в FileManager
         </h2>

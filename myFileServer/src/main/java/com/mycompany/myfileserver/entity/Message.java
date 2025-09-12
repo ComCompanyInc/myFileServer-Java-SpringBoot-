@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 
 /**
  *
@@ -25,6 +27,10 @@ public class Message {
     
     @Column(name = "description")
     private String description;
+    
+    @CreationTimestamp // заставляет Hibernate автоматически устанавливать текущее время при сохранении новой сущности
+    @Column(name = "send_date")
+    private LocalDateTime sendDate;
     
     @ManyToOne
     private Access sender;
@@ -73,5 +79,13 @@ public class Message {
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
+    }
+
+    public LocalDateTime getSendDate() {
+        return sendDate;
+    }
+
+    public void setSendDate(LocalDateTime sendDate) {
+        this.sendDate = sendDate;
     }
 }
