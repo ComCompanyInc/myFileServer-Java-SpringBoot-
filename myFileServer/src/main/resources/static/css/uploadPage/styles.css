@@ -19,6 +19,7 @@ body {
 }
 
 .files-section {
+    overflow: auto;
     background-color: #f8f8f8;
 }
 

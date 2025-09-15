@@ -49,15 +49,15 @@ public class FileUploadController {
     }
     
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteFile(@RequestParam("nameFile") String nameFile, @AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<?> deleteFile(@RequestParam("login") String login, @RequestParam("nameFile") String nameFile, @AuthenticationPrincipal UserDetails userDetails){
         workFileService.setCurrentUploadDir(userDetails.getUsername()); // задаем папку пользователя как путь в который будут храниться все его файлы
-        return ResponseEntity.ok(workFileService.deleteFile(nameFile));
+        return ResponseEntity.ok(workFileService.deleteFile(login, nameFile));
     } 
     
     @GetMapping("/download")
-    public ResponseEntity<Resource> downloadFile(@RequestParam("nameFile") String nameFile, @AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<Resource> downloadFile(@RequestParam("login") String login, @RequestParam("nameFile") String nameFile, @AuthenticationPrincipal UserDetails userDetails){
         workFileService.setCurrentUploadDir(userDetails.getUsername()); // задаем папку пользователя как путь в который будут храниться все его файлы
-        Path filePath = workFileService.findFileByName(nameFile);
+        Path filePath = workFileService.findFileByName(login, nameFile);
         
         // Создаем Resource из файла
         Resource resource = new FileSystemResource(filePath);
@@ -66,5 +66,10 @@ public class FileUploadController {
             .header(HttpHeaders.CONTENT_DISPOSITION, 
                 "attachment; filename=\"" + nameFile + "\"") // header - говорит о том как обрабатывать файл в случае получения пользователем - что это не текст и его нужно скачать в нашем случае
             .body(resource);
-    } 
+    }
+    
+    @GetMapping("/currentLogin")
+    public String getLogin(@AuthenticationPrincipal UserDetails userDetails) {
+        return userDetails.getUsername();
+    }
 }

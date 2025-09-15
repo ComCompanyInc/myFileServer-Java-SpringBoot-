@@ -3,12 +3,31 @@ let currentPage = 0;
 let pageSize = 10;
 let totalPages = 1;
 let totalElements = 0;
+let currentUserLogin = ''; // Добавляем переменную для хранения логина пользователя
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
     initializePagination();
-    loadFiles(currentPage, pageSize);
+    getCurrentLogin().then(() => {
+        loadFiles(currentPage, pageSize);
+    });
 });
+
+// Получение логина текущего пользователя
+async function getCurrentLogin() {
+    try {
+        const response = await fetch('/currentLogin');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        currentUserLogin = await response.text();
+        console.log('Current user login:', currentUserLogin);
+    } catch (error) {
+        console.error('Error getting user login:', error);
+        // Если не удалось получить логин, используем пустую строку
+        currentUserLogin = '';
+    }
+}
 
 // Инициализация обработчиков событий
 function initializePagination() {
@@ -122,7 +141,7 @@ function updateFilesTable(files) {
             </td>
             <td>
                 <div class="copy-text">
-                    /download?nameFile=${escapeHtml(file.name)}
+                    /download?login=${encodeURIComponent(currentUserLogin)}&nameFile=${encodeURIComponent(file.name)}
                 </div>
             </td>
         </tr>
@@ -140,7 +159,7 @@ function updatePaginationInfo() {
 
     const startFile = currentPage * pageSize + 1;
     const endFile = Math.min((currentPage + 1) * pageSize, totalElements);
-    paginationInfo.textContent = `Showing ${startFile}-${endFile} of ${totalElements} files`;
+    paginationInfo.textContent = `Показано ${startFile}-${endFile} из ${totalElements} файлов`;
 
     prevBtn.disabled = currentPage === 0;
     nextBtn.disabled = currentPage >= totalPages - 1;
@@ -176,7 +195,7 @@ function escapeHtml(text) {
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('download-btn')) {
         const fileName = e.target.getAttribute('data-filename');
-        window.open(`/download?nameFile=${encodeURIComponent(fileName)}`, '_blank');
+        window.open(`/download?login=${encodeURIComponent(currentUserLogin)}&nameFile=${encodeURIComponent(fileName)}`, '_blank');
     }
 });
 
@@ -186,7 +205,7 @@ document.addEventListener('click', function(e) {
         const fileName = e.target.getAttribute('data-filename');
         
         if (confirm(`Удалить файл "${fileName}"?`)) {
-            fetch('/delete?nameFile=' + encodeURIComponent(fileName), {
+            fetch('/delete?login=' + encodeURIComponent(currentUserLogin) + '&nameFile=' + encodeURIComponent(fileName), {
                 method: 'DELETE'
             })
             .then(response => {

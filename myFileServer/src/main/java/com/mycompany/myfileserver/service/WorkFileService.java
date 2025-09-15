@@ -88,8 +88,15 @@ public class WorkFileService {
         }
     }
 
-    public Path findFileByName(String name) {
-        Path filePath = uploadDir.resolve(name); // directoryPath.resolve(fileName) объединяет путь директории с именем файла
+    /**
+     * Поиск файла по логину автора и названию самого файла.
+     * @param login Логин автора.
+     * @param fileName Имя файла.
+     * @return Файл.
+     */
+    public Path findFileByName(String login, String fileName) {
+        setCurrentUploadDir(login);
+        Path filePath = uploadDir.resolve(fileName); // directoryPath.resolve(fileName) объединяет путь директории с именем файла
         
         // Проверяем существование файла
         if (Files.exists(filePath)) {
@@ -100,11 +107,11 @@ public class WorkFileService {
         }
     }
     
-    public String deleteFile(String name) {
+    public String deleteFile(String login, String name) {
         try {
             // Удаляем файл
-            if (findFileByName(name) != null) {
-                Files.delete(findFileByName(name));
+            if (findFileByName(login, name) != null) {
+                Files.delete(findFileByName(login, name));
                 return "Файл успешно удален: " + name;
             } else {
                 return "Файл не найден - " + name;
