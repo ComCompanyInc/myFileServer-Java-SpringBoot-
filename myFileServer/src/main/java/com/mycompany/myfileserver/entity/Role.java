@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 /**
- *
+ * DTO-класс ролей пользователей.
  * @author User
  */
 @Entity

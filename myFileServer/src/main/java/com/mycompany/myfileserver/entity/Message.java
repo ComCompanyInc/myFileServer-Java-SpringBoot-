@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 
 /**
- *
+ * DTO-класс сообщений.
  * @author User
  */
 @Entity

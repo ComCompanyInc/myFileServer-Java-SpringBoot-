@@ -13,18 +13,16 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
+ * Сервис обработки файлов.
  * @author User
  */
 @Service
 public class WorkFileService {
-    private MultipartFile file;
+    private MultipartFile file; // файл, для манипуляции над ним в методах.
     
     // Директория со всеми файлами
     Path uploadDir = Paths.get("uploads"); // базовая директория
@@ -33,6 +31,10 @@ public class WorkFileService {
         this.uploadDir = Paths.get("uploads", currentUserLogin); // Устанавливаем путь пользователя
     }
     
+    /**
+     * Метод для загрузки файла.
+     * @return Результат выполнения загрузки.
+     */
     public String uploadFile() {
         try {
             // Проверяем размер файла
@@ -127,6 +129,12 @@ public List<FileDataDto> getUploadedFiles(int page, int size, String searchField
         }
     }
     
+    /**
+     * Метод удаления файла.
+     * @param login Логин автора файла (кто загрузил).
+     * @param name Имя файла для удаления.
+     * @return Результат выполнения.
+     */
     public String deleteFile(String login, String name) {
         try {
             // Удаляем файл

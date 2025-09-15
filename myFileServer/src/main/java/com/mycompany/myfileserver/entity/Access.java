@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 /**
- *
+ * DTO-класс доступа пользователя.
  * @author User
  */
 @Entity
@@ -110,7 +110,5 @@ public class Access {
 
     public void setReceiversMessage(List<Message> receiversMessage) {
         this.receiversMessage = receiversMessage;
-    }
-    
-    
+    }  
 }

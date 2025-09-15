@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
- *
+ * Сервис обработки сообщений.
  * @author User
  */
 @Service
@@ -28,11 +28,20 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
     
-    // для установки логина текущего пользователя
+    /**
+     * Метод установки текущего пользователя в обьект.
+     * (для установки логина текущего пользователя)
+     * @param currentLogin Текущий логин пользователя.
+     */
     public void setUserLogin(String currentLogin) {
         this.currentUserLogin = currentLogin;
     }
     
+    /**
+     * Взятие всех сообщений, адресованных текущему пользователю.
+     * @param pageable Обьект пагинации.
+     * @return Список сообщений пользователю.
+     */
     public List<MessageDto> getUsersMessages(Pageable pageable) {
         // получаем все сообщения
         List<MessageDto> messages = messageRepository.getMessagesByCurrentUserLogin(currentUserLogin, pageable)
@@ -45,6 +54,11 @@ public class MessageService {
         return messages;
     }
     
+    /**
+     * Метод отправки сообщения другому пользователю по его логину.
+     * @param message Обьект сообщения написанный текущим пользователем.
+     * @return Результат выполнения.
+     */
     public ResponseEntity<?> sendMessage(Message message) {
         try {
             messageRepository.save(message);

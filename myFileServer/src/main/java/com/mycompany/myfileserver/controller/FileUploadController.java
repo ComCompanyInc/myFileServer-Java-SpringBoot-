@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
+ * Контроллер файлов
  * @author User
  */
 
@@ -34,6 +34,13 @@ public class FileUploadController {
         this.workFileService = workFileService;
     }
     
+    /**
+     * Роут загрузки файлов.
+     * @param file Файл для загрузки.
+     * @param userDetails
+     * Обьект текущего пользователя из модуля Security.
+     * @return Результат выполнения.
+     */
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file, @AuthenticationPrincipal UserDetails userDetails) {
         workFileService.setCurrentUploadDir(userDetails.getUsername()); // задаем папку пользователя как путь в который будут храниться все его файлы
@@ -42,18 +49,44 @@ public class FileUploadController {
         return workFileService.uploadFile();
     }
     
+    /**
+     * Взятие всех файлов пользователя с пагинацией
+     * (с дополнительной сортировкой по имени searchField).
+     * @param searchField
+     * Поле для сортировки и вывода по совпадению в именах файлов.
+     * @param page Текущая страница (пагинация).
+     * @param size Количество страниц (пагинация).
+     * @param userDetails
+     * Обьект текущего пользователя из модуля Security.
+     * @return Список файлов пользователя.
+     */
     @GetMapping("/getUploaded")
     public List<FileDataDto> getUploadedFiles(@RequestParam("searchField") String searchField, @RequestParam("page") int page, @RequestParam("size") int size, @AuthenticationPrincipal UserDetails userDetails) {
         workFileService.setCurrentUploadDir(userDetails.getUsername()); // задаем папку пользователя как путь в который будут храниться все его файлы
         return workFileService.getUploadedFiles(page, size, searchField);
     }
     
+    /**
+     * Удаление файла.
+     * @param login Логин текущего пользователя.
+     * @param nameFile Имя текущего файла для удаления.
+     * @param userDetails
+     * Обьект текущего пользователя из модуля Security.
+     * @return Результат выполнения.
+     */
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteFile(@RequestParam("login") String login, @RequestParam("nameFile") String nameFile, @AuthenticationPrincipal UserDetails userDetails){
         workFileService.setCurrentUploadDir(userDetails.getUsername()); // задаем папку пользователя как путь в который будут храниться все его файлы
         return ResponseEntity.ok(workFileService.deleteFile(login, nameFile));
     } 
     
+    /**
+     * Скачивание файла.
+     * @param login Логин текущего пользователя.
+     * @param nameFile Имя текущего файла для скачивания.
+     * @param userDetails Обьект текущего пользователя из модуля Security.
+     * @return Результат выполнения.
+     */
     @GetMapping("/download")
     public ResponseEntity<Resource> downloadFile(@RequestParam("login") String login, @RequestParam("nameFile") String nameFile, @AuthenticationPrincipal UserDetails userDetails){
         workFileService.setCurrentUploadDir(userDetails.getUsername()); // задаем папку пользователя как путь в который будут храниться все его файлы
@@ -68,6 +101,11 @@ public class FileUploadController {
             .body(resource);
     }
     
+    /**
+     * Получение логина текущего пользователя.
+     * @param userDetails Обьект текущего пользователя из модуля Security.
+     * @return Логин пользователя в формате строки.
+     */
     @GetMapping("/currentLogin")
     public String getLogin(@AuthenticationPrincipal UserDetails userDetails) {
         return userDetails.getUsername();
