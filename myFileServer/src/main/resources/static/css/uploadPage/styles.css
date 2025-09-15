@@ -35,6 +35,10 @@ h1 {
     font-weight: 600;
 }
 
+.files-section {
+    overflow: auto;
+}
+
 /* Форма загрузки */
 .upload-section form {
     display: flex;

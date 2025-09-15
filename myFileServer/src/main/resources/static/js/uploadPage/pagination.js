@@ -189,11 +189,11 @@ function updatePaginationInfo() {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
 
-    pageInfo.textContent = `Page ${currentPage + 1} of ${totalPages}`;
+    pageInfo.textContent = `Страница ${currentPage + 1} из ${totalPages}`;
 
     const startFile = currentPage * pageSize + 1;
     const endFile = Math.min((currentPage + 1) * pageSize, totalElements);
-    paginationInfo.textContent = `Showing ${startFile}-${endFile} of ${totalElements} files`;
+    paginationInfo.textContent = `Просмотренно ${startFile}-${endFile} из ${totalElements} файлов`;
 
     prevBtn.disabled = currentPage === 0;
     nextBtn.disabled = currentPage >= totalPages - 1;

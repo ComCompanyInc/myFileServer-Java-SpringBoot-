@@ -1,4 +1,4 @@
-/* Основные стили для страницы File Manager */
+/* Основные стили для страницы для upload */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
@@ -33,6 +33,10 @@ h1 {
     margin-bottom: 20px;
     font-size: 1.5rem;
     font-weight: 600;
+}
+
+.files-section {
+    overflow: auto;
 }
 
 /* Форма загрузки */
