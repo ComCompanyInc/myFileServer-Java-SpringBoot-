@@ -43,9 +43,9 @@ public class FileUploadController {
     }
     
     @GetMapping("/getUploaded")
-    public List<FileDataDto> getUploadedFiles(@RequestParam("page") int page, @RequestParam("size") int size, @AuthenticationPrincipal UserDetails userDetails) {
+    public List<FileDataDto> getUploadedFiles(@RequestParam("searchField") String searchField, @RequestParam("page") int page, @RequestParam("size") int size, @AuthenticationPrincipal UserDetails userDetails) {
         workFileService.setCurrentUploadDir(userDetails.getUsername()); // задаем папку пользователя как путь в который будут храниться все его файлы
-        return workFileService.getUploadedFiles(page, size);
+        return workFileService.getUploadedFiles(page, size, searchField);
     }
     
     @DeleteMapping("/delete")

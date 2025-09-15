@@ -3,15 +3,50 @@ let currentPage = 0;
 let pageSize = 10;
 let totalPages = 1;
 let totalElements = 0;
-let currentUserLogin = ''; // Добавляем переменную для хранения логина пользователя
+let currentUserLogin = '';
+let currentSearchTerm = ''; // Добавляем переменную для хранения текущего поискового запроса
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
     initializePagination();
+    initializeSearch();
     getCurrentLogin().then(() => {
-        loadFiles(currentPage, pageSize);
+        loadFiles(currentPage, pageSize, currentSearchTerm);
     });
 });
+
+// Инициализация поиска
+function initializeSearch() {
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        performSearch();
+    });
+
+    document.getElementById('clearSearchBtn').addEventListener('click', function() {
+        clearSearch();
+    });
+
+    // Поиск при нажатии Enter в поле ввода
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            performSearch();
+        }
+    });
+}
+
+// Выполнение поиска
+function performSearch() {
+    currentSearchTerm = document.getElementById('searchInput').value.trim();
+    currentPage = 0; // Сбрасываем на первую страницу при новом поиске
+    loadFiles(currentPage, pageSize, currentSearchTerm);
+}
+
+// Очистка поиска
+function clearSearch() {
+    document.getElementById('searchInput').value = '';
+    currentSearchTerm = '';
+    currentPage = 0;
+    loadFiles(currentPage, pageSize, currentSearchTerm);
+}
 
 // Получение логина текущего пользователя
 async function getCurrentLogin() {
@@ -24,12 +59,11 @@ async function getCurrentLogin() {
         console.log('Current user login:', currentUserLogin);
     } catch (error) {
         console.error('Error getting user login:', error);
-        // Если не удалось получить логин, используем пустую строку
         currentUserLogin = '';
     }
 }
 
-// Инициализация обработчиков событий
+// Инициализация обработчиков событий пагинации
 function initializePagination() {
     document.getElementById('prevBtn').addEventListener('click', function() {
         changePage(currentPage - 1);
@@ -41,11 +75,11 @@ function initializePagination() {
 }
 
 // Загрузка файлов с сервера
-async function loadFiles(page, size) {
+async function loadFiles(page, size, searchTerm) {
     showLoading();
 
     try {
-        const response = await fetch(`/getUploaded?page=${page}&size=${size}`);
+        const response = await fetch(`/getUploaded?searchField=${encodeURIComponent(searchTerm)}&page=${page}&size=${size}`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -159,7 +193,7 @@ function updatePaginationInfo() {
 
     const startFile = currentPage * pageSize + 1;
     const endFile = Math.min((currentPage + 1) * pageSize, totalElements);
-    paginationInfo.textContent = `Показано ${startFile}-${endFile} из ${totalElements} файлов`;
+    paginationInfo.textContent = `Showing ${startFile}-${endFile} of ${totalElements} files`;
 
     prevBtn.disabled = currentPage === 0;
     nextBtn.disabled = currentPage >= totalPages - 1;
@@ -169,7 +203,7 @@ function updatePaginationInfo() {
 function changePage(newPage) {
     if (newPage >= 0 && newPage < totalPages) {
         currentPage = newPage;
-        loadFiles(currentPage, pageSize);
+        loadFiles(currentPage, pageSize, currentSearchTerm);
     }
 }
 
@@ -211,7 +245,7 @@ document.addEventListener('click', function(e) {
             .then(response => {
                 if (response.ok) {
                     alert('Файл удален');
-                    loadFiles(currentPage, pageSize);
+                    loadFiles(currentPage, pageSize, currentSearchTerm);
                 } else {
                     throw new Error('Ошибка сервера');
                 }

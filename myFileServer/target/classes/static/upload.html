@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Файловый сервер</title>
+    <title>File Manager</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/uploadPage/styles.css">
@@ -18,7 +18,9 @@
         });
     </script>
     
-    <h1>File Manager</h1>
+    <br/>
+    
+    <h1>Файловый сервер</h1>
     
     <!-- Секция загрузки -->
     <div class="upload-section">
@@ -28,6 +30,16 @@
             <br/><br/>
             <input type="submit" value="Upload" />
         </form>
+    </div>
+
+    <!-- Секция поиска -->
+    <div class="search-section">
+        <h2>Поиск файлов</h2>
+        <div class="search-controls">
+            <input type="text" id="searchInput" placeholder="Введите название файла для поиска...">
+            <button id="searchBtn">Поиск</button>
+            <button id="clearSearchBtn">Очистить</button>
+        </div>
     </div>
 
     <!-- Секция списка файлов -->

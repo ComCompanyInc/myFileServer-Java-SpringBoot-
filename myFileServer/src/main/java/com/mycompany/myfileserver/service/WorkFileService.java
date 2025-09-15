@@ -55,38 +55,58 @@ public class WorkFileService {
             return "Upload error: " + e.getMessage();
         }
     }
+  
+/**
+ * Взятие всех файлов пользователя с пагинацией если
+ * поисковая строка пустая, иначе сберутся файлы по
+ * именованию с совпадением из поисковой строки.
+ * @param page текущая страница.
+ * @param size общее количество страниц.
+ * @param searchField Поле для поиска совпадений названий файлов.
+ * @return Список всех файлов.
+ */
+public List<FileDataDto> getUploadedFiles(int page, int size, String searchField) {
+    List<FileDataDto> result = new ArrayList<>();
     
-    public List<FileDataDto> getUploadedFiles(int page, int size) {
-        List<FileDataDto> result = new ArrayList<>();
+    try {
+        // 1. Получаем все файлы и папки
+        DirectoryStream<Path> contents = Files.newDirectoryStream(uploadDir);
         
-        try {
-            // 1. Получаем все файлы и папки
-            DirectoryStream<Path> contents = Files.newDirectoryStream(uploadDir);
+        // 2. Счетчики для пагинации
+        int currentIndex = 0;
+        int startIndex = page * size;
+        int endIndex = startIndex + size;
+        int foundCount = 0;
+        
+        // 3. Перебираем всё в цикле
+        for (Path item : contents) {
+            // Проверяем поиск только если searchField не пустой
+            boolean matchesSearch = searchField == null || searchField.isEmpty() || 
+                                  item.getFileName().toString().toLowerCase()
+                                     .contains(searchField.toLowerCase());
             
-            // 2. Счетчики для пагинации
-            int currentIndex = 0;
-            int startIndex = page * size;
-            int endIndex = startIndex + size;
-            
-            // 3. Перебираем всё в цикле
-            for (Path item : contents) {
+            // Если поиск не активен ИЛИ файл подходит под поиск
+            if (matchesSearch) {
+                // Проверяем попадает ли файл в текущую страницу
                 if (currentIndex >= startIndex && currentIndex < endIndex) {
                     result.add(new FileDataDto(item));
+                    foundCount++;
                 }
                 currentIndex++;
-                
-                // Если собрали enough элементов для страницы - выходим
-                if (result.size() >= size) {
-                    break;
-                }
             }
-
-            return result;
-        } catch (Exception e) {
-            System.out.println("Ой! Ошибка: " + e.getMessage());
-            return result;
+            
+            // Если собрали достаточно элементов для страницы - выходим
+            if (foundCount >= size) {
+                break;
+            }
         }
+
+        return result;
+    } catch (Exception e) {
+        System.out.println("Ой! Ошибка: " + e.getMessage());
+        return result;
     }
+}
 
     /**
      * Поиск файла по логину автора и названию самого файла.
