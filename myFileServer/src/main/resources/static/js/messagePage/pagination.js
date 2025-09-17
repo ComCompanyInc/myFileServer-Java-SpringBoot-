@@ -1,7 +1,5 @@
 // script.js
 document.addEventListener('DOMContentLoaded', function() {
-    const API_BASE = 'http://localhost:8080';
-    const PAGE_SIZE = 20;
     
     // Элементы DOM
     const messagesList = document.getElementById('messages-list');
@@ -21,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Загрузка сообщений
     async function loadMessages(page) {
         try {
-            const response = await fetch(`${API_BASE}/messages?page=${page}&size=${PAGE_SIZE}`, {
+            const response = await fetch(`${Config.API_BASE}/messages?page=${page}&size=${Config.MESSAGE_PAGE_SIZE}`, {
                 credentials: 'include'
             });
             
@@ -88,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Отправляемые данные:', JSON.stringify(messageData));
         
         try {
-            const response = await fetch(`${API_BASE}/send`, {
+            const response = await fetch(`${Config.API_BASE}/send`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
