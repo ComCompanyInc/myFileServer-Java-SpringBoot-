@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Регистрация</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div id="header-container"></div>
+        
+        <script>
+          // Загрузка хедера
+          fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('header-container').innerHTML = data;
+            });
+        </script>
+        
+        <div class="border">
+            <h2>Регистрация:</h2>
+            <br/>
+            <input id="login" type="text" name="login" placeholder="Введите логин"><br/>
+            <input id="password" type="password" name="password" placeholder="Введите пароль"><br/>
+            <button id="buttonReg" type="button">Зарегестрироваться</button><br/>
+            <label id="result"></label>
+        </div>
+        
+        <script src="/js/Config.js"></script>
+        <script src="/js/registrationPage/registration.js"></script>
+    </body>
+</html>

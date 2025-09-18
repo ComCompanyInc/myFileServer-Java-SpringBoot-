@@ -1,7 +1,5 @@
 // script.js
 document.addEventListener('DOMContentLoaded', function() {
-    //const API_BASE = 'http://localhost:8080';
-    //const PAGE_SIZE = 20;
     
     // Элементы DOM
     const messagesList = document.getElementById('messages-list');

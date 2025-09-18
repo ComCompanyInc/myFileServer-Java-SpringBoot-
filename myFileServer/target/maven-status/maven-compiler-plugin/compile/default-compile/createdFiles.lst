@@ -1,4 +1,5 @@
 com\mycompany\myfileserver\dto\MessageDto.class
+com\mycompany\myfileserver\service\RegistrationService.class
 com\mycompany\myfileserver\service\WorkFileService.class
 com\mycompany\myfileserver\controller\FileUploadController.class
 com\mycompany\myfileserver\controller\MessageController.class
@@ -14,4 +15,5 @@ com\mycompany\myfileserver\entity\Role.class
 com\mycompany\myfileserver\repository\MessageRepository.class
 com\mycompany\myfileserver\entity\Access.class
 com\mycompany\myfileserver\MyFileServer.class
+com\mycompany\myfileserver\controller\RegistrationController.class
 com\mycompany\myfileserver\repository\AccessRepository.class

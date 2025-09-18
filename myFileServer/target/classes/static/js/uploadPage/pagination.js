@@ -1,6 +1,6 @@
 // Конфигурация
 let currentPage = 0;
-let pageSize = 10;
+let pageSize = Config.UPLOAD_PAGE_SIZE;
 let totalPages = 1;
 let totalElements = 0;
 let currentUserLogin = '';
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializePagination();
     initializeSearch();
     getCurrentLogin().then(() => {
-        loadFiles(currentPage, pageSize, currentSearchTerm);
+        loadFiles(currentPage, pageSize, currentSearchTerm); // вызываем функцию загрузки файлов с передачей пагинации и поиска
     });
 });
 

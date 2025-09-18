@@ -21,6 +21,6 @@ import org.springframework.stereotype.Repository;
 public interface AccessRepository extends JpaRepository<Access, Long> {
     Optional<Access> findByLogin(String login);
     
-    @Query("SELECT access FROM Access access WHERE access.login ILIKE %:searchFilter%")
+    @Query("SELECT access FROM Access access WHERE (access.login ILIKE %:searchFilter%) OR (access.login = NULL)")
     Page<Access> findByLogin(@Param("searchFilter") String searchFilter, Pageable page);
 }

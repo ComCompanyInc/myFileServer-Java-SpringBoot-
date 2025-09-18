@@ -7,6 +7,7 @@ package com.mycompany.myfileserver.service;
 import com.mycompany.myfileserver.dto.AccessDto;
 import com.mycompany.myfileserver.entity.Access;
 import com.mycompany.myfileserver.repository.AccessRepository;
+import com.mycompany.myfileserver.repository.RoleRepository;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +20,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegistrationService {
     AccessRepository accessRepository;
+    RoleRepository roleRepository;
     
-    public RegistrationService(AccessRepository accessRepository) {
+    public RegistrationService(AccessRepository accessRepository, RoleRepository roleRepository) {
         this.accessRepository = accessRepository;
+        this.roleRepository = roleRepository;
     }
     
     public ResponseEntity<String> saveRegistrationAccess(Access access) {
         try {
-            if (accessRepository.findByLogin(access.getLogin()) == null) {
-                accessRepository.save(access);
-                return ResponseEntity.status(201).body("Пользователь успешно сохранен!");
+            if (accessRepository.findByLogin(access.getLogin()).isPresent() == false) {
+                if (roleRepository.findByName(access.getRole().getName()).isPresent() == true) {
+                    access.setRole(roleRepository.findByName(access.getRole().getName()).get());
+                    accessRepository.save(access);
+                    return ResponseEntity.status(201).body("Пользователь успешно сохранен!");
+                } else {
+                    return ResponseEntity.status(400).body("Ошибка - в базе данных нет такой роли!");
+                }
             } else {
                 return ResponseEntity.status(400).body("Ошибка - пользователь с таким логином уже существует!");
             }
